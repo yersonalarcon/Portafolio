@@ -10,6 +10,32 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <script src="https://cdn.tailwindcss.com"></script>
+<style>
+    /* * CSS para la animación de Scroll Reveal (animate-fadeInUp)
+    * Define cómo se ve el elemento antes de aparecer y cómo se mueve
+    */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 40px, 0); /* Empieza 40px abajo */
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    /* Clase para aplicar la animación */
+    .animate-fadeInUp {
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity: 0; /* Asegura que el elemento esté invisible al inicio */
+    }
+</style>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
   </head>
   <body class="bg-gray-50 text-gray-800 font-sans leading-relaxed">
     <!-- Hero Section / Header -->
@@ -52,7 +78,7 @@
               <i class="fab fa-linkedin text-2xl"></i>
             </a>
             <a
-              href="#"
+              href="https://github.com/yersonalarcon"
               class="text-white hover:text-indigo-200 transition-colors duration-200"
             >
               <i class="fab fa-github text-2xl"></i>
@@ -273,7 +299,7 @@
             <div
               class="h-56 bg-gray-100 flex items-center justify-center text-gray-400 text-lg font-bold"
             >
-              Sistema Hospitalario
+              Cine Acme
             </div>
             <div class="p-6">
               <h3 class="text-xl font-semibold text-gray-800 mb-2">
@@ -336,7 +362,7 @@
                     Desarrollador Back-end
                   </h3>
                   <div class="text-sm text-gray-500 mb-1">
-                    Agosto 2025 (esperado)
+                    noviembre 2024 - sep 2025
                   </div>
                   <p class="text-gray-600">CampusJads, Bogotá</p>
                 </div>
@@ -442,4 +468,82 @@
       </div>
     </footer>
   </body>
+  <script>
+    // 1. Navegación Suave (Smooth Scroll)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            // Verifica si el enlace no es uno de los enlaces sociales que ya tienen un 'href="#"'
+            if (this.classList.contains('fab')) {
+                return; // Ignora los enlaces de iconos sociales
+            }
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            // Asegúrate de que el objetivo existe antes de intentar desplazar
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // 2. Revelación de Elementos al Desplazarse (Scroll Reveal)
+    // Inicializa la función para observar y animar elementos
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 // El elemento es visible en un 10%
+    };
+
+    function handleIntersect(entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fadeInUp'); // Aplica la clase de animación
+                observer.unobserve(entry.target); // Deja de observar una vez que ha aparecido
+            }
+        });
+    }
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+
+    // Selecciona las secciones que quieres animar (Ajusta los selectores si es necesario)
+    const sectionsToAnimate = document.querySelectorAll('#about, #skills, #projects, #education-competencies, #contact');
+
+    // Observa cada sección
+    sectionsToAnimate.forEach(section => {
+        observer.observe(section);
+    });
+
+    // Para que la animación funcione, necesitamos el CSS de la animación (ver la sección de CSS más abajo)
+
+
+    // 3. Botón "Subir" (Back to Top Button)
+    const backToTopButton = document.createElement('button');
+    backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    backToTopButton.id = 'back-to-top';
+    backToTopButton.className = 'fixed bottom-6 right-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg opacity-0 transition-opacity duration-300 z-50 hover:bg-indigo-700 focus:outline-none';
+
+    document.body.appendChild(backToTopButton);
+
+    window.addEventListener('scroll', () => {
+        // Muestra u oculta el botón basado en la posición del scroll (ej. después de 300px)
+        if (window.scrollY > 300) {
+            backToTopButton.classList.remove('opacity-0');
+            backToTopButton.classList.add('opacity-100');
+        } else {
+            backToTopButton.classList.remove('opacity-100');
+            backToTopButton.classList.add('opacity-0');
+        }
+    });
+
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
 </html>
